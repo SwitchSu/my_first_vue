@@ -1,10 +1,12 @@
 <script>
 import MyButton from '@/components/MyButton.vue'
 import CalcButton from '@/components/CalcButton.vue'
+import NumButton from '@/components/NumButton.vue';
 export default {
     components: {
         MyButton,
         CalcButton,
+        NumButton,
     },
     data() {
         return {
@@ -13,27 +15,36 @@ export default {
             result: 0,
             calcType: ['+', '-', 'x', '÷'],
             calcNum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            numC: 0,
+            ans:0,
         }
     },
     methods: {
         calcResult(type) {
-            if (this.numA.toString().trim() === '' || this.numB.toString().trim() === '')
-                switch (type) {
-                    case '+':
-                        this.result = this.numA + this.numB
-                        break;
-                    case '-':
-                        this.result = this.numA - this.numB
-                        break;
-                    case 'x':
-                        this.result = this.numA * this.numB
-                        break;
-                    case '÷':
-                        this.result = this.numA / this.numB
-                        break;
-                    default:
-                        break;
-                }
+            if (this.numA.toString().trim() === '' || this.numB.toString().trim() === '') return;
+            switch (type) {
+                case '+':
+                    this.result = this.numA + this.numB
+                    break;
+                case '-':
+                    this.result = this.numA - this.numB
+                    break;
+                case 'x':
+                    this.result = this.numA * this.numB
+                    break;
+                case '÷':
+                    this.result = this.numA / this.numB
+                    break;
+                default:
+                    break;
+            }
+        },
+        final(end) {
+            this.result = end;
+        },
+        keyin(end) {
+            this.ans = end;
+            console.log(this.ans);
         }
     }
 }
@@ -51,9 +62,9 @@ export default {
                 NumB:<input v-model="numB" type="number" class="border-[black] border-[1px] px-2">
             </label>
         </div>
-        <div class="">
+        <!-- <div class="">
             <CalcButton :calc-type="calcNum" />
-        </div>
+        </div> -->
         <CalcButton :calc-type="calcType" :num-a="numA" :num-b="numB" @final-math="final" />
         <div class="btns">
             <MyButton @click="calcResult('+')">+</MyButton>
@@ -68,11 +79,12 @@ export default {
         <div class="result">結果:{{ result }}</div>
         <div class="w-[250px] h-[350px] border-[black] border-[1px]">
             <div class="flex justify-center">
-                <input class="border-[black] border-[1px] my-2 m-auto text-end" type="number">
+                <input v-model="numC" class="border-[black] border-[1px] my-2 m-auto text-end" type="number">
             </div>
             <div>
-                <CalcButton :calc-type="calcNum" />
+                <NumButton :calc-type="calcNum" @key-num = "keyin" />
             </div>
+            {{ ans }}
         </div>
     </main>
 </template>
