@@ -28,19 +28,13 @@ export default {
                 lastTime: this.deadline,
                 recordTime: this.record,
             })
-            // console.log(this.toDoArr.length);
             this.addText = '';
             sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
+            console.log(typeof (this.deadline));
         },
         removeList(id) {
-            this.toDoArr.remove({
-                id: this.toDoArr.id,
-                todo: this.addText,
-                checkList: false,
-                lastTime: this.deadline,
-                recordTime: this.record,
-            })
-            sessionStorage.removeItemItem('todoList', JSON.stringify(this.toDoArr));
+            this.toDoArr = this.toDoArr.filter((items) => items !== id);
+            sessionStorage.removeItem('todoList', JSON.stringify(this.toDoArr));
             sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
         }
     },
@@ -75,10 +69,15 @@ export default {
                 class="bg-[#E9A2AD] border-[#D3455B] border-[1px] px-1 py-2 my-1 flex justify-between items-center">
                 <input v-model="item.checkList" type="checkbox" class="mr-[10px]">
                 <!-- <input type="text" class="border-[gray] border-[1px] p-1 mr-[10px]" placeholder=".todo__title"> -->
-                <span :class="{ 'line-through': item.checkList }">{{ item.todo }}</span>
+                <div class="w-[100px] flex flex-wrap justify-center items-center">
+                    <span :class="{ 'line-through': item.checkList }">
+                        {{ item.todo }}
+                    </span>
+                </div>
                 <span>最後時間:{{ item.lastTime }}</span>
                 <span>紀錄時間:{{ item.recordTime }}</span>
-                <button type="button" class="text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1" @click="removeList(item.id)">
+                <button type="button" class="text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1"
+                    @click="removeList(item)">
                     <font-awesome-icon :icon="['fas', 'trash']" />
                 </button>
             </div>
