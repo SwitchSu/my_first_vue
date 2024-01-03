@@ -74,6 +74,7 @@ export default {
                         {{ item.todo }}
                     </span>
                 </div>
+                <!-- <div class="w-[100px] block text-center" :class="{ 'line-through': item.checkList }">{{ item.todo }}</div> -->
                 <span>最後時間:{{ item.lastTime }}</span>
                 <span>紀錄時間:{{ item.recordTime }}</span>
                 <button type="button" class="text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1"
@@ -81,14 +82,6 @@ export default {
                     <font-awesome-icon :icon="['fas', 'trash']" />
                 </button>
             </div>
-            <!-- <div class="bg-[#E9A2AD] border-[#D3455B] border-[1px] px-1 py-3">
-                <input type="checkbox" class="mr-[10px]">
-                <input type="text" class="border-[gray] border-[1px] p-1 mr-[10px]" placeholder=".todo__title">
-                <button type="button"
-                    class="add text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1">
-                    <font-awesome-icon :icon="['fas', 'trash']" />
-                </button>
-            </div> -->
         </div>
     </main>
     <footer></footer>
