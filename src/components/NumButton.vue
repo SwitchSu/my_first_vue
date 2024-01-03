@@ -8,7 +8,7 @@ export default {
             type: Array,
         },
         numC: {
-            type: Number,
+            type: String,
         }
     },
     emit: ['keyNum'],
@@ -16,14 +16,14 @@ export default {
         return {
             type: this.calcType ?? [],
             result: 0,
-            numberC: this.numC ?? 0,
+            numberC: this.numC ?? '',
         }
     },
     methods: {
-        // keyin(item) {
-        //     (this.numberC = this.item + this.item).toString().trim();
-        //     this.$emit('keyNum', this.numberC);
-        // }
+        keyin(num) {
+            this.numberC += num;
+            this.$emit('keyNum', this.numberC);
+        }
 
     }
 }

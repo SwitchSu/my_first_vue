@@ -47,6 +47,7 @@ export default {
             console.log(this.ans);
         }
     }
+    
 }
 </script>
 <template>

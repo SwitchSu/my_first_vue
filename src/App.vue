@@ -1,6 +1,6 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld.vue'
 export default {
   data() {
     return {
@@ -10,8 +10,8 @@ export default {
 }
 </script>
 
-<template>
-  <header class="">
+<template class="flex flex-col">
+  <!-- <header class="">
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
@@ -23,13 +23,18 @@ export default {
         <RouterLink to="/calc">Calc</RouterLink>
       </nav>
     </div>
-  </header>
-  <main>
+  </header> -->
+  <RouterLink to="/">Home</RouterLink>
+  <RouterLink to="/about">About</RouterLink>
+  <RouterLink to="/calc">Calc</RouterLink>
+  <RouterLink to="/todolist">TodoList</RouterLink>
+  <!-- <main>
     <div>count:{{ count }}</div>
     <button type="button" @click='count++'>++</button>
-  </main>
-
-  <RouterView />
+  </main> -->
+  <div>
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
