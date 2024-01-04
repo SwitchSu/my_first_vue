@@ -21,6 +21,7 @@ export default {
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/calc">Calc</RouterLink>
+        <RouterLink to="/todolist">TodoList</RouterLink>
       </nav>
     </div>
   </header> -->
@@ -28,6 +29,7 @@ export default {
   <RouterLink to="/about">About</RouterLink>
   <RouterLink to="/calc">Calc</RouterLink>
   <RouterLink to="/todolist">TodoList</RouterLink>
+  <RouterLink to="/picupload">PicUpload</RouterLink>
   <!-- <main>
     <div>count:{{ count }}</div>
     <button type="button" @click='count++'>++</button>

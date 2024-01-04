@@ -1,4 +1,5 @@
 <script>
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -8,56 +9,98 @@ export default {
                     id: 1,
                     todo: '吃午餐',
                     checkList: false,
-                    lastTime: '',
-                    recordTime: '',
+                    editIng:false,
+                    lastTime: '2024-02-30',
+                    recordTime: '2024-01-03',
+                    newTodo: '',
                 },
             ],
-            deadline: '',
-            record: '',
+            deadline: new Date().toISOString().split('T')[0],
+            done:[],
+            
         }
     },
     methods: {
         addList() {
-            if (!this.addText) return;
-            const listId = this.toDoArr.length ? Math.max(...this.toDoArr.map(item => item.id)) + 1 : 1;
-            // const listId = this.toDoArr.length += 1;
-            this.toDoArr.push({
-                id: listId,
-                todo: this.addText,
-                checkList: false,
-                lastTime: this.deadline,
-                recordTime: this.record,
-            })
-            this.addText = '';
-            sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
-            console.log(typeof (this.deadline));
+            let date = new Date().toISOString().split('T');
+            Swal.fire({
+                title: "確定要新增嗎?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "是",
+                cancelButtonText: "否",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (!this.addText || !this.deadline) return Swal.fire({
+                        title: "請不要空白!!",
+                        icon: "error"
+                    });
+                    const listId = this.toDoArr.length ? Math.max(...this.toDoArr.map(item => item.id)) + 1 : 1;
+                    // const listId = this.toDoArr.length += 1;
+                    this.toDoArr.push({
+                        id: listId,
+                        todo: this.addText,
+                        checkList: false,
+                        editIng:false,
+                        lastTime: this.deadline,
+                        recordTime: date[0],
+                        newTodo: '',
+                    })
+                    this.addText = '';
+                    this.deadline = new Date().toISOString().split('T')[0];
+                    sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
+                    Swal.fire({
+                        title: "儲存成功",
+                        icon: "success"
+                    });
+                }
+            });
         },
         removeList(id) {
             this.toDoArr = this.toDoArr.filter((items) => items !== id);
-            sessionStorage.removeItem('todoList', JSON.stringify(this.toDoArr));
             sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
+        },
+        saveList() {
+            sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
+        },
+        startEdit(item){
+            item.editIng = !item.editIng;
+            item.newTodo = item.todo;
+        },
+        topEdit(item){
+            item.editIng = !item.editIng;
+            item.todo = item.newTodo;
+            item.newTodo = '';
+            this.saveList();
+        },
+        load(){
+            
         }
     },
     mounted() {
         if (sessionStorage.getItem('todoList')) {
             this.toDoArr = JSON.parse(sessionStorage.getItem('todoList'));
         }
-        // else {
-        //     sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
-        // }
-
+    },
+    computed: {
+        doneList() {
+            let done = this.toDoArr.filter((item) => item === item.checkList).length;
+            return done = this.done;
+        },
     },
 }
 </script>
 <template>
-    <header></header>
+    <header>
+    </header>
     <main class="border-[gray] border-[1px] p-4">
         <h1>Todo List</h1>
         <div class="bg-[#8DD7CF] border-[#1AAE9F] border-[1px] p-2">
             <input v-model="addText" type="text" class="border-[gray] border-[1px] px-2 py-1 mr-2"
                 placeholder="Add New Todo Here...">
-            <span>deadline:<input type="date" v-model="deadline"></span>
-            <span>recording:<input type="date" v-model="record"></span>
+            <span>最後期限:<input type="date" v-model="deadline"></span>
             <button type="button" @click="addList()"
                 class="text-[#44BDB1] bg-[white] border-[#63C8BD] border-[1px] rounded-md px-3 py-1 ml-2">
                 <font-awesome-icon :icon="['fas', 'plus']" />
@@ -66,22 +109,25 @@ export default {
         <hr class="text-[#DFE6ED] my-2">
         <div class="h-[250px] border-[gray] border-[1px] p-2 overflow-y-scroll">
             <div v-for="item in toDoArr" :key="item.id"
-                class="bg-[#E9A2AD] border-[#D3455B] border-[1px] px-1 py-2 my-1 flex justify-between items-center">
-                <input v-model="item.checkList" type="checkbox" class="mr-[10px]">
-                <!-- <input type="text" class="border-[gray] border-[1px] p-1 mr-[10px]" placeholder=".todo__title"> -->
+                class="bg-[#E9A2AD] border-[#D3455B] border-[1px] px-1 py-2 my-1 flex gap-[20px] items-center">
+                <input v-model="item.checkList" type="checkbox" class="mr-[10px]" @change="saveList()">
                 <div class="w-[100px] flex flex-wrap justify-center items-center">
-                    <span :class="{ 'line-through': item.checkList }">
+                    <span v-if="!item.editIng" :class="{ 'line-through': item.checkList }" @click="startEdit(item)">
                         {{ item.todo }}
                     </span>
+                    <input v-else v-model="item.newTodo" type="text" @keyup.enter="$event.target.blur()" @blur="topEdit(item)">
                 </div>
-                <!-- <div class="w-[100px] block text-center" :class="{ 'line-through': item.checkList }">{{ item.todo }}</div> -->
-                <span>最後時間:{{ item.lastTime }}</span>
+                <span>最後期限:{{ item.lastTime }}</span>
                 <span>紀錄時間:{{ item.recordTime }}</span>
-                <button type="button" class="text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1"
+                <button v-show="!item.checkList" type="button"
+                    class="text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1"
                     @click="removeList(item)">
                     <font-awesome-icon :icon="['fas', 'trash']" />
                 </button>
             </div>
+        </div>
+        <div class="my-2 w-full border-[#000000] border-[1px] rounded-lg">
+            <div class="w-full bg-[#a2fdff] rounded-lg" @change="load()">進度條:{{ this.done }} /{{ toDoArr.length }}</div>
         </div>
     </main>
     <footer></footer>
