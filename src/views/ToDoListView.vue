@@ -9,15 +9,15 @@ export default {
                     id: 1,
                     todo: '吃午餐',
                     checkList: false,
-                    editIng:false,
+                    editIng: false,
                     lastTime: '2024-02-30',
                     recordTime: '2024-01-03',
                     newTodo: '',
                 },
             ],
             deadline: new Date().toISOString().split('T')[0],
-            done:[],
-            
+            done: '',
+            loading: '',
         }
     },
     methods: {
@@ -43,7 +43,7 @@ export default {
                         id: listId,
                         todo: this.addText,
                         checkList: false,
-                        editIng:false,
+                        editIng: false,
                         lastTime: this.deadline,
                         recordTime: date[0],
                         newTodo: '',
@@ -65,30 +65,29 @@ export default {
         saveList() {
             sessionStorage.setItem('todoList', JSON.stringify(this.toDoArr));
         },
-        startEdit(item){
+        startEdit(item) {
             item.editIng = !item.editIng;
             item.newTodo = item.todo;
         },
-        topEdit(item){
+        topEdit(item) {
             item.editIng = !item.editIng;
             item.todo = item.newTodo;
             item.newTodo = '';
             this.saveList();
         },
-        load(){
-            
-        }
+        doneList() {
+            this.done = this.toDoArr.filter(item => item.checkList).length;
+            return this.done;
+        },
+        load() {
+            this.loading = (this.done / this.toDoArr.length) * 100 + '%';
+            return this.loading;
+        },
     },
     mounted() {
         if (sessionStorage.getItem('todoList')) {
             this.toDoArr = JSON.parse(sessionStorage.getItem('todoList'));
         }
-    },
-    computed: {
-        doneList() {
-            let done = this.toDoArr.filter((item) => item === item.checkList).length;
-            return done = this.done;
-        },
     },
 }
 </script>
@@ -97,7 +96,7 @@ export default {
     </header>
     <main class="border-[gray] border-[1px] p-4">
         <h1>Todo List</h1>
-        <div class="bg-[#8DD7CF] border-[#1AAE9F] border-[1px] p-2">
+        <div class="bg-[#8DD7CF] border-[#1AAE9F] border-[1px] p-2 flex justify-evenly items-center">
             <input v-model="addText" type="text" class="border-[gray] border-[1px] px-2 py-1 mr-2"
                 placeholder="Add New Todo Here...">
             <span>最後期限:<input type="date" v-model="deadline"></span>
@@ -115,20 +114,30 @@ export default {
                     <span v-if="!item.editIng" :class="{ 'line-through': item.checkList }" @click="startEdit(item)">
                         {{ item.todo }}
                     </span>
-                    <input v-else v-model="item.newTodo" type="text" @keyup.enter="$event.target.blur()" @blur="topEdit(item)">
+                    <input v-else v-model="item.newTodo" type="text" @keyup.enter="$event.target.blur()"
+                        @blur="topEdit(item)">
                 </div>
                 <span>最後期限:{{ item.lastTime }}</span>
                 <span>紀錄時間:{{ item.recordTime }}</span>
-                <button v-show="!item.checkList" type="button"
-                    class="text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1"
-                    @click="removeList(item)">
-                    <font-awesome-icon :icon="['fas', 'trash']" />
-                </button>
+                <div class="w-[40px] h-[30px]">
+                    <button v-show="!item.checkList" type="button"
+                        class="text-[#D65065] bg-[white] border-[#E18190] border-[1px] rounded-md px-2 py-1"
+                        @click="removeList(item)">
+                        <font-awesome-icon :icon="['fas', 'trash']" />
+                    </button>
+                </div>
+
             </div>
         </div>
-        <div class="my-2 w-full border-[#000000] border-[1px] rounded-lg">
-            <div class="w-full bg-[#a2fdff] rounded-lg" @change="load()">進度條:{{ this.done }} /{{ toDoArr.length }}</div>
+        <div class="flex items-center mt-3">
+            <div class="w-[90px]">
+                進度條:{{ doneList() }}/{{ toDoArr.length }}
+            </div>
+            <div class="w-full h-[15px] border-[#000000] border-[1px] rounded-lg">
+                <div class="h-full bg-[#a2fdff] rounded-lg" :style="{ width: load() }"></div>
+            </div>
         </div>
+
     </main>
     <footer></footer>
 </template>
