@@ -22,18 +22,20 @@ export default {
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/calc">Calc</RouterLink>
         <RouterLink to="/todolist">TodoList</RouterLink>
+        <RouterLink to="/picupload">PicUpload</RouterLink> 
       </nav>
     </div>
-  </header> -->
+  </header>
+  
+  <main>
+    <div>count:{{ count }}</div>
+    <button type="button" @click='count++'>++</button>
+  </main> -->
   <RouterLink to="/">Home</RouterLink>
   <RouterLink to="/about">About</RouterLink>
   <RouterLink to="/calc">Calc</RouterLink>
   <RouterLink to="/todolist">TodoList</RouterLink>
   <RouterLink to="/picupload">PicUpload</RouterLink>
-  <!-- <main>
-    <div>count:{{ count }}</div>
-    <button type="button" @click='count++'>++</button>
-  </main> -->
   <div>
     <RouterView />
   </div>

@@ -106,15 +106,24 @@ export default {
             </button>
         </div>
         <hr class="text-[#DFE6ED] my-2">
+        <!-- <div class="border-[gray] border-[1px] p-2">
+            <div class="px-1 py-2 flex gap-[20px] items-center">
+                <div>Finished</div>
+                <div class="mr-[80px]">To-do</div>
+                <div class="mr-[80px]">Deadline</div>
+                <div>Record</div>
+                <div>Delete</div>
+            </div>
+        </div> -->
         <div class="h-[250px] border-[gray] border-[1px] p-2 overflow-y-scroll">
             <div v-for="item in toDoArr" :key="item.id"
                 class="bg-[#E9A2AD] border-[#D3455B] border-[1px] px-1 py-2 my-1 flex gap-[20px] items-center">
                 <input v-model="item.checkList" type="checkbox" class="mr-[10px]" @change="saveList()">
-                <div class="w-[100px] flex flex-wrap justify-center items-center">
+                <div class="w-[100px] flex break-all justify-center items-center">
                     <span v-if="!item.editIng" :class="{ 'line-through': item.checkList }" @click="startEdit(item)">
                         {{ item.todo }}
                     </span>
-                    <input v-else v-model="item.newTodo" type="text" @keyup.enter="$event.target.blur()"
+                    <input class="w-[100px]" v-else v-model="item.newTodo" type="text" @keyup.enter="$event.target.blur()"
                         @blur="topEdit(item)">
                 </div>
                 <span>最後期限:{{ item.lastTime }}</span>
@@ -134,11 +143,15 @@ export default {
                 進度條:{{ doneList() }}/{{ toDoArr.length }}
             </div>
             <div class="w-full h-[15px] border-[#000000] border-[1px] rounded-lg">
-                <div class="h-full bg-[#a2fdff] rounded-lg" :style="{ width: load() }"></div>
+                <div class="trans h-full bg-[#a2fdff] rounded-lg" :style="{ width: load() }"></div>
             </div>
         </div>
 
     </main>
     <footer></footer>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.trans {
+    transition: 0.6s;
+}
+</style>
