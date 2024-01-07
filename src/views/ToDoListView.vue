@@ -16,8 +16,6 @@ export default {
                 },
             ],
             deadline: new Date().toISOString().split('T')[0],
-            done: '',
-            loading: '',
         }
     },
     methods: {
@@ -89,6 +87,17 @@ export default {
             this.toDoArr = JSON.parse(sessionStorage.getItem('todoList'));
         }
     },
+    computed: {
+        // doneList() {
+        //     let done = this.toDoArr.filter(item => item.checkList).length;
+        //     return done;
+        // },
+        // load() {
+        //     let done = this.toDoArr.filter(item => item.checkList).length;
+        //     let loading = (done / this.toDoArr.length) * 100 + '%';
+        //     return loading;
+        // },
+    }
 }
 </script>
 <template>
