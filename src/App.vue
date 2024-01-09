@@ -1,10 +1,12 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import BgImg from '@/assets/img/animation.gif'
 export default {
   data() {
     return {
       count: 0,
+      BgImg,
     };
   }
 }
@@ -31,14 +33,19 @@ export default {
     <div>count:{{ count }}</div>
     <button type="button" @click='count++'>++</button>
   </main> -->
-  <RouterLink to="/">Home</RouterLink>
-  <RouterLink to="/about">About</RouterLink>
-  <RouterLink to="/calc">Calc</RouterLink>
-  <RouterLink to="/todolist">TodoList</RouterLink>
-  <RouterLink to="/picupload">PicUpload</RouterLink>
-  <div>
-    <RouterView />
-  </div>
+  <header>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/about">About</RouterLink>
+    <RouterLink to="/calc">Calc</RouterLink>
+    <RouterLink to="/todolist">TodoList</RouterLink>
+    <RouterLink to="/picupload">PicUpload</RouterLink>
+    <RouterLink to="/weather">Weather</RouterLink>
+  </header>
+  <!-- <main class="h-[100vh] w-[100vw] text-[#ffffff]" :style="{backgroundImage: `url(${BgImg})`}"> -->
+    <div>
+      <RouterView />
+    </div>
+  <!-- </main> -->
 </template>
 
 <style scoped>
