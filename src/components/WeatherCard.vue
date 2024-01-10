@@ -1,15 +1,32 @@
 <script>
+import summer from '@/assets/img/sun-cloud.svg'
+import cloud from '@/assets/img/cloud.svg'
+import rain from '@/assets/img/rain.svg'
 export default {
     props: {
         weatherType: {
             type: Object,
         },
     },
-    // data(){
-    //     return{
-    //         type:this.weatherType ?? {},
-    //     }
-    // }
+    data(){
+        return{
+            // type:this.weatherType ?? {},
+            summer,
+            cloud,
+            rain,
+        }
+    },
+    methods:{
+        RainPercentage(item){
+            if (item <= 30){
+                return summer;
+            } else if(item <= 70){
+                return cloud;
+            }else {
+                return rain;
+            }
+        },
+    }
 }
 </script>
 <template>
@@ -22,7 +39,7 @@ export default {
         <div class="sky">{{ weatherType.weatherElement[0].time[0].parameter.parameterName }}</div>
         <div class="feel">{{ weatherType.weatherElement[3].time[0].parameter.parameterName }}
         </div>
-        <!-- <img src="${s}" alt=""> -->
+        <img :src="RainPercentage(weatherType.weatherElement[1].time[2].parameter.parameterName)" alt="">
     </div>
 </template>
 <style lang="scss" scoped>
