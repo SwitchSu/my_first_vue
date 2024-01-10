@@ -13,14 +13,14 @@ export default {
 }
 </script>
 <template>
-    <div class="card" v-for="item in weatherType" :key="item.id">
-        <div class="name">縣市:{{item.locationName}}</div>
+    <div class="card">
+        <div class="name">縣市:{{weatherType.locationName}}</div>
         <div class="temp">
-            溫度:{{item.weatherElement[2].time[2].parameter.parameterName}}°C ~ {{ item.weatherElement[4].time[0].parameter.parameterName }}°C
+            溫度:{{weatherType.weatherElement[2].time[2].parameter.parameterName}}°C ~ {{ weatherType.weatherElement[4].time[0].parameter.parameterName }}°C
         </div>
-        <div class="rain">降雨機率:{{ item.weatherElement[1].time[2].parameter.parameterName }}%</div>
-        <div class="sky">{{ item.weatherElement[0].time[0].parameter.parameterName }}</div>
-        <div class="feel">{{ item.weatherElement[3].time[0].parameter.parameterName }}
+        <div class="rain">降雨機率:{{ weatherType.weatherElement[1].time[2].parameter.parameterName }}%</div>
+        <div class="sky">{{ weatherType.weatherElement[0].time[0].parameter.parameterName }}</div>
+        <div class="feel">{{ weatherType.weatherElement[3].time[0].parameter.parameterName }}
         </div>
         <!-- <img src="${s}" alt=""> -->
     </div>
